@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+
+  # -------------------------------
+  #   RABBITMQ SERVICE
+  # -------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  # -------------------------------
+  #   MONGO DATABASE
+  # -------------------------------
+  mongo:
+    image: mongo
+    restart: always
+    container_name: mongo_main
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # -------------------------------
+  #   AUTH SERVICE
+  # -------------------------------
+  auth-service:
+    build: ./auth-service
+    container_name: auth_service
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      MONGO_URI: mongodb://mongo:27017/auth_db
+      JWT_ACCESS_SECRET: access_secret_123
+      JWT_REFRESH_SECRET: refresh_secret_123
+      REFRESH_TOKEN_EXPIRES: 7d
+      RABBITMQ_URL: amqp://rabbitmq:5672
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  # -------------------------------
+  #   PRODUCT SERVICE
+  # -------------------------------
+  product-service:
+    build: ./product-service
+    container_name: product_service
+    restart: always
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      MONGO_URI: mongodb://mongo:27017/product_db
+      RABBITMQ_URL: amqp://rabbitmq:5672
+      AUTH_QUEUE: auth_queue
+    depends_on:
+      - mongo
+      - rabbitmq
+      - auth-service
+
+volumes:
+  mongo_data:
