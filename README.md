@@ -35,18 +35,18 @@ You **must rename both folders**:
 
 
 ### This is Auth-Service .env file:
-PORT=3001
-MONGO_URI=mongodb://localhost:27017/auth_db
-JWT_ACCESS_SECRET=access_secret_123
-JWT_REFRESH_SECRET=refresh_secret_123
-RABBITMQ_URL=amqp://localhost:5672
-REFRESH_TOKEN_EXPIRES=1d
+- PORT=3001
+- MONGO_URI=mongodb://localhost:27017/auth_db
+- JWT_ACCESS_SECRET=access_secret_123
+- JWT_REFRESH_SECRET=refresh_secret_123
+- RABBITMQ_URL=amqp://localhost:5672
+- REFRESH_TOKEN_EXPIRES=1d
 
 ### This is Product-Service .env file:
-PORT=3002
-MONGO_URI=mongodb://localhost:27017/product_db
-RABBITMQ_URL=amqp://localhost:5672
-AUTH_QUEUE=auth_queue
+- PORT=3002
+- MONGO_URI=mongodb://localhost:27017/product_db
+- RABBITMQ_URL=amqp://localhost:5672
+- AUTH_QUEUE=auth_queue
 
 
 # After cloning the repository, run the following commands:
