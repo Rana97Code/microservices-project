@@ -7,7 +7,7 @@ import { ProductModule } from './modules/product/product.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypegooseModule.forRoot(process.env.MONGO_URI ?? 'mongodb://localhost:27017'),
+    TypegooseModule.forRoot(process.env.MONGO_URI ?? 'mongodb://localhost:27017/product_db'),
     ProductModule,
   ],
 })

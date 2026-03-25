@@ -14,5 +14,5 @@ export class Product {
   price: number;
 
   @prop({ required: true })
-  userId: string; // owner
+  userId: string; 
 }

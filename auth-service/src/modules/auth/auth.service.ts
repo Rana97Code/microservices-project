@@ -35,12 +35,12 @@ generateTokens(user) {
 
   const accessToken = this.jwtService.sign(payload, {
     secret: process.env.JWT_ACCESS_SECRET,
-    expiresIn: '15m',
+    expiresIn: '25m',                                       // Short-lived access token
   });
 
   const refreshToken = this.jwtService.sign(payload, {
     secret: process.env.JWT_REFRESH_SECRET,
-    expiresIn: (process.env.REFRESH_TOKEN_EXPIRES || '7d') as any,
+    expiresIn: (process.env.REFRESH_TOKEN_EXPIRES || '2d') as any, // Longer-lived refresh token
   });
 
   return { accessToken, refreshToken };
@@ -91,7 +91,6 @@ async validateToken(token: string) {
     password: hashedPassword,
   });
 
-  // publish event
   this.rmqClient.emit('user.created', {
     id: user._id,
     email: user.email,
@@ -103,18 +102,7 @@ async validateToken(token: string) {
 
 
 
-//   // LOGIN
-//   async login(dto) {
-//     const user = await this.userService.findByEmail(dto.email);
-//     if (!user) throw new BadRequestException('Invalid email/password');
-
-//     const match = await bcrypt.compare(dto.password, user.password);
-//     if (!match) throw new BadRequestException('Invalid email/password');
-
-//     // TODO: generate JWT access + refresh tokens
-
-//     return { message: 'Login successful', user };
-//   }
+// LOGIN
 
 async login(dto) {
   const user = await this.userService.findByEmail(dto.email);
@@ -123,7 +111,7 @@ async login(dto) {
   const match = await bcrypt.compare(dto.password, user.password);
   if (!match) throw new BadRequestException('Invalid email/password');
 
-  const tokens = this.generateTokens(user);
+  const tokens = this.generateTokens(user);   // Generate new tokens
 
   return {
     message: 'Login successful',

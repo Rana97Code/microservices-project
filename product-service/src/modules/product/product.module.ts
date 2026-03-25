@@ -10,7 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     TypegooseModule.forFeature([Product]),
     ClientsModule.register([
       {
-        name: 'AUTH_SERVICE',
+        name: 'AUTH_SERVICE',   // Service name for rabbitmq communication
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:5672'],

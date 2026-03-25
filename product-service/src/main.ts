@@ -7,7 +7,6 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  await app.listen(process.env.PORT || 3002);
   console.log(`Product Service running on port 3002`);
 
     // Swagger Setup
@@ -32,6 +31,8 @@ async function bootstrap() {
   });
 
   await app.startAllMicroservices();
+  await app.listen(process.env.PORT || 3002);
+
 }
 
 bootstrap();

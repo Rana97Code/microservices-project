@@ -1,35 +1,27 @@
-version: '3.9'
 
 services:
 
-  # -------------------------------
-  #   RABBITMQ SERVICE
-  # -------------------------------
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rmq
     ports:
       - "5672:5672"
-      - "15672:15672"  # Management UI
+      - "15672:15672"  
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
 
-  # -------------------------------
-  #   MONGO DATABASE
-  # -------------------------------
+ 
   mongo:
     image: mongo
     restart: always
-    container_name: mongo_main
+    container_name: mongo
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
 
-  # -------------------------------
-  #   AUTH SERVICE
-  # -------------------------------
+ 
   auth-service:
     build: ./auth-service
     container_name: auth_service
@@ -47,9 +39,7 @@ services:
       - mongo
       - rabbitmq
 
-  # -------------------------------
-  #   PRODUCT SERVICE
-  # -------------------------------
+
   product-service:
     build: ./product-service
     container_name: product_service
